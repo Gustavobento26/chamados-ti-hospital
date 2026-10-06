@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chamados_ti
+      POSTGRES_USER: chamados
+      POSTGRES_PASSWORD: altere-esta-senha
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: ./server
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+psycopg://chamados:altere-esta-senha@db:5432/chamados_ti
+      SECRET_KEY: altere-por-uma-chave-aleatoria-grande
+      APP_NAME: Chamados TI Hospital
+      COOKIE_SECURE: "0"
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
