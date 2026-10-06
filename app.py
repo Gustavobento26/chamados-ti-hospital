@@ -24,6 +24,9 @@ from starlette.middleware.cors import CORSMiddleware
 
 APP_DIR = Path(__file__).resolve().parent
 DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{APP_DIR / 'chamados_ti.db'}")
+
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 SECRET_KEY = os.getenv("SECRET_KEY", "troque-esta-chave-em-producao")
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "0") == "1"
 APP_NAME = os.getenv("APP_NAME", "Chamados TI Hospital")
